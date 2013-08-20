@@ -1,0 +1,74 @@
+Questionnaire
+Design
+1.	A Prompt is an abstract class, it has:
+a.	Title
+b.	Description
+c.	
+2.	A Prompt can be simple/leave or composite.
+3.	A leave Prompt is a basic element that can be part of a composite Prompt, some samples are:
+a.	InformationalText 
+b.	Note
+c.	ErrorMessage
+d.	Answer types:
+i.	BooleanAnswer
+ii.	TextAnswer
+iii.	CurrencyAnswer
+iv.	DateAnswer
+v.	NumericAnswer
+vi.	PhoneAnswer
+vii.	EmailAnswer
+viii.	UrlAnswer
+ix.	See HTML5 input types for other types of answers
+4.	A composite Prompt is composed by basic Prompts, some examples are:
+a.	Question, abstract class:
+i.	SingleAnswerQuestion
+ii.	MultipleAnswerQuestion
+b.	Questionnaire
+c.	QuantityPerDurationAnswer
+i.	TextAnswer
+ii.	List of BooleanAnswer options (durations) to select one
+Notes:
+1.	A basic/leave element doesn’t depend of any other element.
+2.	A composite element is composed by other elements that can be leaves and/or other composites.
+Prompt Properties
+1.	Each prompt has a Parent that is the prompt that contains it.
+2.	The Questionnaire is the only prompt whose Parent property is null.
+Objects Dependencies
+1.	There can be forward dependencies among the prompts
+2.	No backward dependencies are allowed
+3.	No cyclic dependencies are allowed
+4.	Cascade dependencies are possible
+a.	A change in “A” can trigger an update in “B” and so on, see an example below.
+b.	A -> B -> C -> D
+5.	Dependency types between prompts: 
+a.	Active
+i.	Target prompts will be active only if source prompt is active
+b.	Disable
+c.	Required
+i.	The value of certain properties of other prompts depend if the source Answer prompt was  answered.
+d.	SpecificValue (other prompts will react if a given prompt has an specific value; i.e. a BooleanAnswer is true)
+e.	Valid (other prompts will react if a prompt has any given valid value)
+Event Types
+1.	OnActive
+a.	Notified by a prompt when its “IsActive property changed to true
+2.	OnInActive
+a.	Notified by a prompt when its “IsActive property changed to false
+3.	OnEnable
+a.	Notified by a prompt when its “IsEnabled property changed to true
+4.	OnDisable
+a.	Notified by a prompt when its “IsEnabled property changed to false
+5.	OnValueChanged
+a.	Notified by a prompt when its “Value” property changed 
+6.	OnAnswered
+a.	Notified by a prompt when any valid or invalid answer was enter into its Value
+b.	This might be used for the Required dependency
+7.	OnUnswered
+a.	Notified by a prompt when its Value property does not contain any value. This might happen during setup if the prompt has not default value, or if the answer was deleted
+b.	This might be used for the Required dependency
+Business/Validation Rules
+1.	Extract business/validation rules outside of the prompts.
+2.	Each prompt has an IsValid property and a “Rules” collection attached. This promotes reusability of each “Rule” object and rule objects can be attached/detached to/from a prompt at runtime depending of certain conditions if needed.
+3.	The “IsValid” property iterates the “Rules” collection and returns “true” if all the rules are true, or “false” otherwise
+4.	
+
+
